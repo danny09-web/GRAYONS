@@ -1,0 +1,118 @@
+index.html.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daniel – Crypto Strategist</title>
+  <style>
+    :root{--bg1:#0f1221;--bg2:#1b1f36;--fg:#f7f8fc;--muted:#b9bed6;--accent:#6d6dff;--accent2:#a855f7;--card:#14172a;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial;line-height:1.5;color:var(--fg);background:radial-gradient(1200px 600px at 80% -10%,rgba(168,85,247,.25),transparent),radial-gradient(900px 500px at -10% 20%,rgba(109,109,255,.35),transparent),linear-gradient(180deg,var(--bg1),var(--bg2));}
+    .container{max-width:980px;margin:0 auto;padding:48px 20px 80px;}
+    .pill{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);backdrop-filter:blur(6px);border-radius:999px;padding:8px 14px;font-size:.9rem;color:var(--muted)}
+    h1{font-size:clamp(2.2rem,4vw,3rem);margin:.6rem 0 1rem}
+    .lead{font-size:1.1rem;color:var(--muted);max-width:60ch}
+    section{margin-top:42px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px 20px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+    .grid{display:grid;gap:18px}
+    @media(min-width:800px){.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:center}}
+    .tag{display:inline-block;margin:.3rem .4rem 0 0;padding:.35rem .7rem;border-radius:999px;background:rgba(168,85,247,.15);color:#e9d5ff;border:1px solid rgba(168,85,247,.35);font-size:.85rem}
+    .btn{appearance:none;border:0;border-radius:14px;padding:12px 18px;font-weight:600;color:white;background:linear-gradient(135deg,var(--accent),var(--accent2));cursor:pointer;transition:transform .05s ease,filter .2s ease;}
+    .btn:hover{filter:brightness(1.05)}
+    .btn:active{transform:translateY(1px)}
+    .links a{display:inline-flex;align-items:center;gap:.5rem;color:var(--fg);text-decoration:none;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);padding:10px 14px;border-radius:12px}
+    .links{display:flex;flex-wrap:wrap;gap:10px}
+    .muted{color:var(--muted)}
+    footer{margin-top:40px;color:var(--muted);font-size:.95rem}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="pill">Crypto Strategist • Web Dev • Marketing Plug</span>
+    <h1>Daniel</h1>
+    <p class="lead">I help tokens go from launch to legend. I build clean crypto brands, hype them with precision, and develop websites that convert.</p>
+
+    <section class="hero">
+      <div class="card">
+        <h2>Services</h2>
+        <ul>
+          <li>Meme Token Launch Strategy</li>
+          <li>Custom Websites – <strong>$1200</strong> flat</li>
+          <li>Telegram Hype Bots &amp; Organic Marketing</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tag">Branding</span>
+          <span class="tag">Web Dev</span>
+          <span class="tag">Growth</span>
+        </div>
+      </div>
+      <div class="card" id="game">
+        <h2>Tap Frenzy</h2>
+        <p class="muted">Test your degen fingers – tap the button as fast as you can in 10 seconds!</p>
+        <p><strong>⏱ Time Left: <span id="time">10</span> s</strong></p>
+        <p>Score: <strong><span id="score">0</span></strong></p>
+        <button class="btn" id="tap">TAP ME!</button>
+        <button class="btn" id="restart" style="margin-left:8px;background:linear-gradient(135deg,#475569,#64748b)">Restart</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Reach Out</h2>
+      <div class="links">
+        <a href="https://t.me/danieakp" target="_blank" rel="noopener">Telegram</a>
+        <a href="" target="_blank" rel="noopener">Twitter (X)</a>
+        
+      </div>
+      <h3 class="muted" style="margin-top:14px">Payment Methods</h3>
+      <p>Ethereum · Solana · Bitcoin · SUI</p>
+      <div>
+        <button class="btn" id="copy">Copy Wallet</button>
+        <span id="copied" class="muted" style="margin-left:8px;opacity:.9;display:none">✅ Copied to clipboard</span>
+      </div>
+    </section>
+
+    <footer>Crafted by Daniel. Based. Brave. Bullish.</footer>
+  </div>
+
+  <script>
+    // Tap game logic
+    (function(){
+      const tapBtn = document.getElementById('tap');
+      const restartBtn = document.getElementById('restart');
+      const timeEl = document.getElementById('time');
+      const scoreEl = document.getElementById('score');
+      let time = 10, score = 0, playing = false, timerId = null;
+
+      function tick(){
+        time -= 1; timeEl.textContent = String(time);
+        if(time <= 0){
+          clearInterval(timerId); timerId = null; playing = false; tapBtn.disabled = true;
+        }
+      }
+      function start(){
+        if(playing) return; playing = true; time = 10; score = 0;
+        timeEl.textContent = '10'; scoreEl.textContent = '0';
+        tapBtn.disabled = false; if(timerId) clearInterval(timerId);
+        timerId = setInterval(tick, 1000);
+      }
+      tapBtn.addEventListener('click', function(){
+        if(!playing){ start(); }
+        if(time > 0){ score += 1; scoreEl.textContent = String(score); }
+      });
+      restartBtn.addEventListener('click', function(){ start(); });
+    })();
+
+    // Copy-to-clipboard demo
+    (function(){
+      const copyBtn = document.getElementById('copy');
+      const copied = document.getElementById('copied');
+      const WALLET = '0xYourWalletAddressGoesHere';
+      copyBtn.addEventListener('click', async () => {
+        try{ await navigator.clipboard.writeText(WALLET); copied.style.display = 'inline'; setTimeout(()=>copied.style.display='none', 1800);}catch(e){ alert('Copy failed'); }
+      });
+    })();
+  </script>
+</body>
+</html>
